@@ -1,0 +1,121 @@
+---
+title: "Project 1: R Component - Titanic Data Exploration"
+author: "**Name:** Val Wong - vmw170030"
+date:   "**Date:** 3/7/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+## ---Exploration Functions---
+
+### Loading the Titanic data.
+```{r}
+# setwd("C:\\Users\\Val Wong\\Documents\\RStudio-Workspace\\Proj01")
+Titanic <- read.csv("titanic_project.csv") # read csv file
+Titanic$pclass <- factor(Titanic$pclass)            # Levels 1,2,3
+Titanic$survived <- factor(Titanic$survived)        # Levels 0 1
+Titanic$sex <- factor(Titanic$sex)                  # Levels 0 1
+```
+
+### Display Column Names and Structure of Titanic Data
+Displaying the overall structure of the csv file data frame. 5 variables and their types.
+```{r}
+names(Titanic) # data exploration function
+str(Titanic) # data exploration function
+```
+
+### Number of Observations
+1046 total rows.
+```{r}
+print(paste("Total Number of Rows in Titanic: ", NROW(Titanic))) # data exploration function
+```
+
+### Preview First and Last Few Rows
+Display a couple of rows in the front and end of the Titanic data frame.
+```{r}
+head(Titanic) # data exploration function
+tail(Titanic) # data exploration function
+```
+
+### By-Column Analysis
+Statistic information of each column in the data frame.
+```{r}
+summary(Titanic) # data exploration function
+```
+
+### Interesting Information
+Display total survived = 0 and total survived = 1.
+```{r}
+print(paste("Total Not Survived (survived = 0): ",sum(Titanic$survived==0))) # data exploration function
+print(paste("Total Survived (survived = 1): ",sum(Titanic$survived==1))) # data exploration function
+```
+
+## ---Data Visualization---
+
+### Survived
+Histogram of Titanic Survived. More values of survived = 0, than survived = 1.
+```{r}
+plot(factor(Titanic$survived),
+     main= "Titanic Data by Survived",
+     xlab= "0 = Perished, 1 = Survived")
+```
+
+### Sex
+More males than females.
+```{r}
+plot(factor(Titanic$sex),
+     main= "Titanic Data by Sex",
+     xlab= "0 = Female, 1 = Male")
+```
+
+### Passenger Class
+More people of passenger class 3.
+```{r}
+plot(factor(Titanic$pclass),
+     main= "Titanic Data by Passenger Class",
+     xlab= "Class 1, 2, or 3")
+```
+
+### Age
+Age visual statistic information. Age 18 to 25 are higher in distribution.
+```{r}
+hist(Titanic$age,
+     main= "Titanic Data by Age",
+     xlab= "age (in yrs)")
+```
+
+### Passenger Class vs. Survived
+PClass vs Survived. More of passenger class 2 and passenger class 3 perished than survived. Passenger class 1 survived way more compared to other classes.
+```{r}
+plot(as.factor(Titanic$pclass), as.factor(Titanic$survived),
+     main= "Passenger Class vs. Survived",
+     xlab= "Passenger Class",
+     ylab= "0 = Perished, 1 = Survived")
+
+```
+
+### Passenger Class vs. Sex
+Most female survived and most male perished.
+```{r}
+plot(as.factor(Titanic$sex), as.factor(Titanic$survived),
+     main= "Sex vs. Survived",
+     xlab= "0 = Female, 1 = Male",
+     ylab= "0 = Perished, 1 = Survived")
+```
+### GLM Residual Plot
+Plot of the residuals vs. regression line.
+```{r}
+i <- 1:900
+train <- Titanic[i, ] # 900 in train
+test <- Titanic[-i, ] # 146 in test
+glm1 <- glm(survived ~ pclass, data=train, family="binomial")
+plot(glm1)
+```
+
+### Overall
+Titanic data frame (as a whole) plot
+```{r}
+plot(Titanic)
+```
+
